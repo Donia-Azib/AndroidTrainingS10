@@ -13,9 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidtrainings10.R;
+import com.example.androidtrainings10.adapter.WeatherAdapter;
+import com.example.androidtrainings10.model.Weather;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
 
@@ -26,6 +31,8 @@ public class WeatherFragment extends Fragment {
     private ListView weather_list;
     private ImageView weather_img;
     private String user_city;
+    private String lon,lat;
+    private ArrayList<Weather> weatherArrayList;
 
     public WeatherFragment() {
         // Required empty public constructor
@@ -44,6 +51,8 @@ public class WeatherFragment extends Fragment {
         weather_list = root.findViewById(R.id.weather_list);
         weather_img = root.findViewById(R.id.weather_img);
 
+        weatherArrayList = new ArrayList<>();
+
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +69,7 @@ public class WeatherFragment extends Fragment {
     }
 
     private void SearchCity() {
+
         String api_url = "http://api.openweathermap.org/data/2.5/weather?q=" + user_city + "&appid=4fac134337f98e2b2a4c1746f80ecc2d&units=metric";
         Ion.with(getActivity())
                 .load(api_url)
@@ -89,9 +99,56 @@ public class WeatherFragment extends Fragment {
                                     .withBitmap()
                                     .intoImageView(weather_img);
 
+                            lat = result.get("coord").getAsJsonObject().get("lat").getAsString();
+                            lon = result.get("coord").getAsJsonObject().get("lon").getAsString();
+
+                            setListWeather();
+
                         }
                     }
                 });
-
     }
+
+    private void setListWeather()
+    {
+        String api_url_list = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+lon+"&exclude=hourly,minutely,current&units=metric&appid=4fac134337f98e2b2a4c1746f80ecc2d";
+        Ion.with(getActivity())
+                .load(api_url_list)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if(e != null)
+                        {
+                            Log.e("TAG", "onCompleted: error2 = "+e.getMessage() );
+                            Toast.makeText(getActivity(), "something went wrong .. !", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            String TimeZone = result.get("timezone").getAsString();
+                            JsonArray dailyJson = result.get("daily").getAsJsonArray();
+//                            Gson gson = new Gson();
+//                            Weather[] weathers = gson.fromJson(dailyJson.toString(),Weather[].class);
+                            for (int i=1 ; i< dailyJson.size() ; i++)
+                            {
+                                JsonObject object = dailyJson.get(i).getAsJsonObject();
+                                Double max = object.get("temp").getAsJsonObject().get("max").getAsDouble();
+
+                                String weather_icon = object.get("weather").getAsJsonArray().get(0).getAsJsonObject().get("icon").getAsString();
+
+                                Long dt = object.get("dt").getAsLong();
+
+
+                                weatherArrayList.add(new Weather(dt,TimeZone,weather_icon,max));
+                                Log.d("TAG", "onCompleted: weather list size "+weatherArrayList.size());
+                            }
+//                            arrayList c bn rempli
+
+                            WeatherAdapter adapter = new WeatherAdapter(getActivity(),weatherArrayList);
+                            weather_list.setAdapter(adapter);
+                        }
+                    }
+                });
+    }
+
 }

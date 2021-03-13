@@ -1,20 +1,31 @@
 package com.example.androidtrainings10.model;
 
 public class Weather {
-    private String max,icon,dt;
+    private long dt;
+    private String timezone,icon;
+    private Double temp;
 
-    public Weather(String max, String icon, String dt) {
-        this.max = max;
+    public Weather(long dt, String timezone, String icon, Double temp) {
+        this.dt = dt;
+        this.timezone = timezone;
         this.icon = icon;
+        this.temp = temp;
+    }
+
+    public long getDt() {
+        return dt;
+    }
+
+    public void setDt(long dt) {
         this.dt = dt;
     }
 
-    public String getMax() {
-        return max;
+    public String getTimezone() {
+        return timezone;
     }
 
-    public void setMax(String max) {
-        this.max = max;
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 
     public String getIcon() {
@@ -25,11 +36,11 @@ public class Weather {
         this.icon = icon;
     }
 
-    public String getDt() {
-        return dt;
+    public Double getTemp() {
+        return temp;
     }
 
-    public void setDt(String dt) {
-        this.dt = dt;
+    public void setTemp(Double temp) {
+        this.temp = temp;
     }
 }

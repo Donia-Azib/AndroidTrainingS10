@@ -13,6 +13,7 @@ import com.example.androidtrainings10.R;
 import com.example.androidtrainings10.model.Weather;
 import com.koushikdutta.ion.Ion;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
     private ImageView img;
     private TextView weather_c,weather_date;
 
-    public WeatherAdapter(@NonNull Context context,  @NonNull Weather[] objects) {
+    public WeatherAdapter(@NonNull Context context,  @NonNull ArrayList<Weather> objects) {
         super(context, R.layout.weather_model_list, objects);
     }
 
@@ -36,16 +37,26 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
         img= convertView.findViewById(R.id.weather_image);
 
         Weather weather = getItem(position);
-        String longV = weather.getDt();
-        long millisecond = Long.parseLong(longV);
-        // or you already have long value of date, use this instead of milliseconds variable.
-        String dateString = DateFormat.format("dd/MM/yyyy", new Date(millisecond)).toString();
-        weather_date.setText(dateString);
 
-        weather_c.setText(weather.getMax());
+//        date
+//        image
+//        temp
+//        Date date = new Date(weather.getDt()*1000);
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd",Locale.ENGLISH);
+//        dateFormat.setTimeZone(TimeZone.getTimeZone(weather.getTimezone()));
+//        dateFormat.format(date);
+//        weather_date.setText(dateFormat.toString());
 
+        String dateString = DateFormat.format("dd-MM-yyyy", new Date(weather.getDt()*1000L)).toString();
+        weather_date.setText(dateString.toString());
+
+
+        weather_c.setText(weather.getTemp().toString()+" C°");
+
+
+        String image_url = "http://openweathermap.org/img/wn/"+weather.getIcon()+".png";
         Ion.with(getContext())
-                .load(weather.getIcon())
+                .load(image_url)
                 .withBitmap()
                 .intoImageView(img);
 
