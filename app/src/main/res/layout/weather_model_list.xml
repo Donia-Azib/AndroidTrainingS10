@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:weightSum="10">
+
+    <TextView
+        android:id="@+id/weather_date"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:fontFamily="casual"
+        android:gravity="start|center_vertical"
+        android:paddingStart="20dp"
+        android:text="Mon,Mar 21"
+        android:textAllCaps="true"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/weather_image"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/weather_c"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="20,19C°"
+        android:textAllCaps="true"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</LinearLayout>

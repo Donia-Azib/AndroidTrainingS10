@@ -10,4 +10,7 @@
     <string name="menu_home">Game</string>
     <string name="menu_gallery">Sport</string>
     <string name="menu_slideshow">Hotels</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="weather_label">Weather</string>
 </resources>

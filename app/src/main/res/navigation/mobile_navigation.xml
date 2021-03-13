@@ -22,4 +22,9 @@
         android:name="com.example.androidtrainings10.ui.hotel.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_weather"
+        android:name="com.example.androidtrainings10.ui.weather.WeatherFragment"
+        android:label="fragment_weather"
+        tools:layout="@layout/fragment_weather" />
 </navigation>
